@@ -12,6 +12,6 @@ namespace vehlwn::json {
 class JsonBuilder
 {
 public:
-    Value parse(std::shared_ptr<peg::Ast> ast);
+    Value exec(const std::shared_ptr<peg::Ast>& ast);
 };
 } // namespace vehlwn::json

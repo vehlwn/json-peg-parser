@@ -13,12 +13,12 @@ constexpr const char* GRAMMAR = R"(
     array           <- '[' ws ']' / '[' elements ']'
     elements        <- element (',' element)*
     element         <- ws value ws
-    string          <- '"' characters '"'
+    string          <- ["] < characters > ["]
     characters      <- character*
     character       <- [^\\"\u0000-\u001F] / '\\' escape
-    escape          <- '"' / '\\' / '/' 'b' / 'f'/ 'n'/ 'r' / 't' / 'u' hex hex hex hex
+    escape          <- ["] / [\\] / [/] / 'b' / 'f'/ 'n'/ 'r' / 't' / 'u' hex hex hex hex
     hex             <- digit / [A-F] / [a-f]
-    number          <- integer fraction? exponent?
+    number          <- < integer fraction? exponent? >
     integer         <- onenine digits / digit / '-' onenine digits / '-' digit
     digits          <- digit+
     digit           <- '0' / onenine
