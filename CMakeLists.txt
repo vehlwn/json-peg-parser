@@ -35,11 +35,11 @@ conan_cmake_run(
   cpp-peglib/1.3.3
   icu/68.2
   BASIC_SETUP
+  BUILD missing
 )
 
-add_executable(
-  ${PROJECT_NAME}
-  main.cpp
+add_library(
+  vehlwnjson OBJECT
   AstBuilder.h
   AstBuilder.cpp
   JsonBuilder.h
@@ -47,4 +47,15 @@ add_executable(
   Value.h
   Value.cpp
 )
-target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
+
+add_executable(
+  tests
+  main.cpp
+)
+target_link_libraries(tests vehlwnjson ${CONAN_LIBS})
+
+add_executable(
+  benchmark
+  benchmark.cpp
+)
+target_link_libraries(benchmark vehlwnjson ${CONAN_LIBS})
