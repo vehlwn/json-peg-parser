@@ -187,4 +187,42 @@ int main()
         assert(stringValue.isString());
         assert(stringValue.asString() == unescaped);
     }
+    {
+        const auto ast = b.parse("[]");
+        std::cout << peg::ast_to_s(ast) << std::endl;
+        const Value emptyArrayValue = compiler.exec(ast);
+        assert(emptyArrayValue.isArray());
+        assert(emptyArrayValue.asArray().empty());
+    }
+    {
+        const auto ast = b.parse("[42, 10, 1, 74]");
+        std::cout << peg::ast_to_s(ast) << std::endl;
+        const Value arrayValue = compiler.exec(ast);
+        assert(arrayValue.isArray());
+        assert(arrayValue.asArray().size() == 4);
+        assert(arrayValue[0].isNumber() && arrayValue[0].asNumber() == 42);
+        assert(arrayValue[1].isNumber() && arrayValue[1].asNumber() == 10);
+        assert(arrayValue[2].isNumber() && arrayValue[2].asNumber() == 1);
+        assert(arrayValue[3].isNumber() && arrayValue[3].asNumber() == 74);
+    }
+    {
+        const auto ast = b.parse(R"([23.59, "sss", ["nested", "array"]])");
+        std::cout << peg::ast_to_s(ast) << std::endl;
+        const Value nestedArrayValue = compiler.exec(ast);
+        assert(nestedArrayValue.isArray());
+        assert(nestedArrayValue.asArray().size() == 3);
+        assert(
+            nestedArrayValue[0].isNumber()
+            && nestedArrayValue[0].asNumber() == 23.59);
+        assert(
+            nestedArrayValue[1].isString()
+            && nestedArrayValue[1].asString() == "sss");
+        const Value& nested = nestedArrayValue[2];
+        assert(
+            nested.isArray() && nested[0].isString()
+            && nested[0].asString() == "nested");
+        assert(
+            nested.isArray() && nested[1].isString()
+            && nested[1].asString() == "array");
+    }
 }

@@ -66,7 +66,19 @@ private:
 class Value;
 class Array
 {
-    std::vector<Value> val;
+public:
+    Array(std::vector<Value> x)
+        : m_value{std::move(x)}
+    {
+    }
+
+    const std::vector<Value>& get() const noexcept
+    {
+        return m_value;
+    }
+
+private:
+    std::vector<Value> m_value;
 };
 
 class Object
@@ -136,6 +148,20 @@ public:
     const std::string& asString() const
     {
         return std::get<String>(m_variant).get();
+    }
+
+    bool isArray() const noexcept
+    {
+        return std::holds_alternative<Array>(m_variant);
+    }
+    const std::vector<Value>& asArray() const
+    {
+        return std::get<Array>(m_variant).get();
+    }
+
+    const Value& operator[](const std::size_t i) const
+    {
+        return asArray()[i];
     }
 
 private:
