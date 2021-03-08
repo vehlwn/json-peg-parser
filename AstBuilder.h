@@ -4,17 +4,17 @@
 #include <memory>
 #include <peglib.h>
 #include <string>
+#include <string_view>
 
 namespace vehlwn::json {
 class AstBuilder
 {
 public:
     AstBuilder();
-    std::shared_ptr<peg::Ast> parse(std::string s);
+    std::shared_ptr<peg::Ast> parse(const std::string_view s);
 
 private:
     peg::parser m_parser;
-    std::string m_s;
 };
 
 struct ParserError : std::exception

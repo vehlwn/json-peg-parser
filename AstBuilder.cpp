@@ -1,6 +1,7 @@
 #include "AstBuilder.h"
 
 #include <algorithm>
+#include <string_view>
 
 namespace {
 constexpr const char* GRAMMAR = R"(
@@ -44,11 +45,10 @@ AstBuilder::AstBuilder()
     m_parser.enable_packrat_parsing();
 }
 
-std::shared_ptr<peg::Ast> AstBuilder::parse(std::string s)
+std::shared_ptr<peg::Ast> AstBuilder::parse(const std::string_view s)
 {
-    m_s = std::move(s);
     std::shared_ptr<peg::Ast> ast;
-    if(m_parser.parse(m_s, ast))
+    if(m_parser.parse(s, ast))
     {
         return ast;
     }
