@@ -11,7 +11,7 @@ int main()
     std::ostringstream os;
     os << "[";
     std::string comma = "";
-    for(std::size_t i = 0; i < 2'000; i++)
+    for(std::size_t i = 0; i < 3'000; i++)
     {
         os << comma << "{"
            << "\"key " << i << "\":" << i << "}";
