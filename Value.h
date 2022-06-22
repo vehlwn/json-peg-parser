@@ -83,7 +83,19 @@ private:
 
 class Object
 {
-    std::map<std::string, Value> value;
+public:
+    Object(std::map<std::string, Value> x)
+        : m_value{std::move(x)}
+    {
+    }
+
+    const std::map<std::string, Value>& get() const noexcept
+    {
+        return m_value;
+    }
+
+private:
+    std::map<std::string, Value> m_value;
 };
 
 class Value
@@ -158,10 +170,22 @@ public:
     {
         return std::get<Array>(m_variant).get();
     }
-
     const Value& operator[](const std::size_t i) const
     {
         return asArray()[i];
+    }
+
+    bool isObject() const noexcept
+    {
+        return std::holds_alternative<Object>(m_variant);
+    }
+    const std::map<std::string, Value>& asObject() const
+    {
+        return std::get<Object>(m_variant).get();
+    }
+    const Value& operator[](const std::string i) const
+    {
+        return asObject().at(i);
     }
 
 private:

@@ -1,24 +1,11 @@
 #include "AstBuilder.h"
 #include "JsonBuilder.h"
+#include "Value.h"
 
 #include <cassert>
 #include <iostream>
 #include <peglib.h>
 #include <string>
-
-namespace tests {
-const std::string s1 = R"(
-{
-	"key array": [10, -30, 50.4, -73.145, -96.12e-1, 45.91e+1],
-	"key bools": [true, false, true, true],
-	"key null": null,
-	"key object": {
-		"nested key": [null, true, false]
-	},
-	"string key": "hello",
-	"number key": 42
-})";
-} // namespace tests
 
 int main()
 {
@@ -224,5 +211,51 @@ int main()
         assert(
             nested.isArray() && nested[1].isString()
             && nested[1].asString() == "array");
+    }
+    {
+        const auto ast = b.parse(R"({})");
+        std::cout << peg::ast_to_s(ast) << std::endl;
+        const Value objectValue = compiler.exec(ast);
+        assert(objectValue.isObject());
+    }
+    {
+        const auto ast = b.parse(R"({"key": 42})");
+        std::cout << peg::ast_to_s(ast) << std::endl;
+        const Value objectValue = compiler.exec(ast);
+        assert(objectValue.isObject());
+        const Value& v = objectValue["key"];
+        assert(v.isNumber() && v.asNumber() == 42);
+    }
+    {
+        const auto ast = b.parse(R"(
+{
+	"key array": [10, -30, 50.4, -73.145, -96.12e-1, 45.91e+1],
+	"key bools": [true, false, true, true],
+	"key null": null,
+	"key object": {
+		"nested key": [null, true, false]
+	},
+	"string key": "hello",
+	"number key": 42
+})");
+        std::cout << peg::ast_to_s(ast) << std::endl;
+        const Value objectValue = compiler.exec(ast);
+        assert(objectValue.isObject());
+        assert(objectValue["key array"][0].asNumber() == 10);
+        assert(objectValue["key array"][1].asNumber() == -30);
+        assert(objectValue["key array"][2].asNumber() == 50.4);
+        assert(objectValue["key array"][3].asNumber() == -73.145);
+        assert(objectValue["key array"][4].asNumber() == -96.12e-1);
+        assert(objectValue["key array"][5].asNumber() == 45.91e+1);
+        assert(objectValue["key bools"][0].asBool() == true);
+        assert(objectValue["key bools"][1].asBool() == false);
+        assert(objectValue["key bools"][2].asBool() == true);
+        assert(objectValue["key bools"][3].asBool() == true);
+        assert(objectValue["key null"].isNull());
+        assert(objectValue["key object"]["nested key"][0].isNull());
+        assert(objectValue["key object"]["nested key"][1].asBool() == true);
+        assert(objectValue["key object"]["nested key"][2].asBool() == false);
+        assert(objectValue["string key"].asString() == "hello");
+        assert(objectValue["number key"].asNumber() == 42);
     }
 }
