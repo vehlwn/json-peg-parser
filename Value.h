@@ -16,15 +16,9 @@ class Null
 class Bool
 {
 public:
-    Bool(bool v)
-        : m_value{v}
-    {
-    }
+    Bool(bool v);
 
-    bool get() const noexcept
-    {
-        return m_value;
-    }
+    bool get() const noexcept;
 
 private:
     bool m_value;
@@ -33,15 +27,9 @@ private:
 class Number
 {
 public:
-    Number(double x)
-        : m_value{x}
-    {
-    }
+    Number(double x);
 
-    double get() const noexcept
-    {
-        return m_value;
-    }
+    double get() const noexcept;
 
 private:
     double m_value;
@@ -68,15 +56,9 @@ class Value;
 class Array
 {
 public:
-    Array(std::vector<Value> x)
-        : m_value{std::move(x)}
-    {
-    }
+    Array(std::vector<Value> x);
 
-    const std::vector<Value>& get() const noexcept
-    {
-        return m_value;
-    }
+    const std::vector<Value>& get() const noexcept;
 
 private:
     std::vector<Value> m_value;
@@ -85,15 +67,9 @@ private:
 class Object
 {
 public:
-    Object(std::map<std::string, Value> x)
-        : m_value{std::move(x)}
-    {
-    }
+    Object(std::map<std::string, Value> x);
 
-    const std::map<std::string, Value>& get() const noexcept
-    {
-        return m_value;
-    }
+    const std::map<std::string, Value>& get() const noexcept;
 
 private:
     std::map<std::string, Value> m_value;
