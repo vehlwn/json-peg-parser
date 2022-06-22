@@ -4,11 +4,12 @@ set grid
 input_file = "times.txt"
 set output "times.png"
 
-f1(x) = a2 * x**2 + a1 * x**1 + a0
-fit f1(x) input_file using 1:2 via a2, a1, a0
+f1(x) = a1 * x**1 + a0
+fit f1(x) input_file using 1:2 via a1, a0
 
-set xlabel "bytes"
+set xlabel "MB"
 set ylabel "s"
+set title "nlohmann_json"
 plot input_file using 1:2 with points pointtype 7 title "Time data",\
     f1(x) lw 2 title "Least squares curve"
 

@@ -34,6 +34,7 @@ conan_cmake_run(
   REQUIRES
   cpp-peglib/1.3.3
   icu/68.2
+  nlohmann_json/3.9.1
   BASIC_SETUP
   BUILD missing
 )
@@ -47,6 +48,7 @@ add_library(
   Value.h
   Value.cpp
 )
+find_package(Boost REQUIRED COMPONENTS json)
 
 add_executable(
   tests
@@ -58,4 +60,4 @@ add_executable(
   benchmark
   benchmark.cpp
 )
-target_link_libraries(benchmark vehlwnjson ${CONAN_LIBS})
+target_link_libraries(benchmark vehlwnjson ${CONAN_LIBS} Boost::json)
