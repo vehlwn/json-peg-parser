@@ -1,0 +1,13 @@
+set terminal png
+
+set output "times.png"
+set grid
+
+f1(x) = a2 * x**2 + a1 * x**1 + a0
+fit f1(x) "times.txt" using 1:2 via a2, a1, a0
+
+set xlabel "bytes"
+set ylabel "s"
+plot "times.txt" using 1:2 with points pointtype 7 title "Time data",\
+    f1(x) lw 2 title "Least squares curve"
+
