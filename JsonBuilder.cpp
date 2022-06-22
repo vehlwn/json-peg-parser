@@ -53,7 +53,23 @@ vehlwn::json::Object compileObject(const std::shared_ptr<peg::Ast>& ast)
 }
 vehlwn::json::Array compileArray(const std::shared_ptr<peg::Ast>& ast)
 {
-    return vehlwn::json::Array{};
+    std::cout << __func__ << '\n';
+    std::cout << "  name = " << ast->name << '\n';
+    std::cout << "  choise = " << ast->choice << '\n';
+    std::cout << "  token = " << ast->token << '\n';
+    std::cout << "  nodes.size = " << ast->nodes.size() << '\n';
+    if(ast->choice == 0)
+        return vehlwn::json::Array{{}};
+
+    const auto& elements = ast->nodes[0];
+    std::vector<vehlwn::json::Value> ret;
+    ret.reserve(elements->nodes.size());
+    for(const auto& element : elements->nodes)
+    {
+        const auto& value = element->nodes[1];
+        ret.push_back(compileValue(value));
+    }
+    return ret;
 }
 vehlwn::json::String compileString(const std::shared_ptr<peg::Ast>& ast)
 {
