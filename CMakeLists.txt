@@ -45,5 +45,6 @@ add_executable(
   JsonBuilder.h
   JsonBuilder.cpp
   Value.h
+  Value.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})

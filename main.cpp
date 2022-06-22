@@ -1,164 +1,117 @@
-#include "AstBuilder.h"
-#include "JsonBuilder.h"
 #include "Value.h"
 
 #include <cassert>
 #include <iostream>
-#include <peglib.h>
 #include <string>
 
 int main()
 {
-    using namespace vehlwn::json;
-    AstBuilder b;
-    JsonBuilder compiler;
+    using vehlwn::json::parse;
     {
-        const auto ast = b.parse("true");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto trueValue = compiler.exec(ast);
+        const auto trueValue = parse("true");
         assert(trueValue.isBool());
         assert(trueValue.asBool() == true);
     }
     {
-        const auto ast = b.parse("false");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto falseValue = compiler.exec(ast);
+        const auto falseValue = parse("false");
         assert(falseValue.isBool());
         assert(falseValue.asBool() == false);
     }
     {
-        const auto ast = b.parse("null");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto nullValue = compiler.exec(ast);
+        const auto nullValue = parse("null");
         assert(nullValue.isNull());
         nullValue.asNull();
     }
     {
-        const auto ast = b.parse("88005553535");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveIntValue = compiler.exec(ast);
+        const auto positiveIntValue = parse("88005553535");
         assert(positiveIntValue.isNumber());
         assert(positiveIntValue.asNumber() == 88005553535.0);
     }
     {
-        const auto ast = b.parse("-88005553535");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeIntValue = compiler.exec(ast);
+        const auto negativeIntValue = parse("-88005553535");
         assert(negativeIntValue.isNumber());
         assert(negativeIntValue.asNumber() == -88005553535.0);
     }
     {
-        const auto ast = b.parse("880055.53535");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveFractionValue = compiler.exec(ast);
+        const auto positiveFractionValue = parse("880055.53535");
         assert(positiveFractionValue.isNumber());
         assert(positiveFractionValue.asNumber() == 880055.53535);
     }
     {
-        const auto ast = b.parse("-880055.53535");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeFractionValue = compiler.exec(ast);
+        const auto negativeFractionValue = parse("-880055.53535");
         assert(negativeFractionValue.isNumber());
         assert(negativeFractionValue.asNumber() == -880055.53535);
     }
     {
-        const auto ast = b.parse("88005553535e10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveIntValueExp = compiler.exec(ast);
+        const auto positiveIntValueExp = parse("88005553535e10");
         assert(positiveIntValueExp.isNumber());
         assert(positiveIntValueExp.asNumber() == 88005553535e10);
     }
     {
-        const auto ast = b.parse("-88005553535e10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeIntValueExp = compiler.exec(ast);
+        const auto negativeIntValueExp = parse("-88005553535e10");
         assert(negativeIntValueExp.isNumber());
         assert(negativeIntValueExp.asNumber() == -88005553535e10);
     }
     {
-        const auto ast = b.parse("880055.53535e10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveFractionValueExp = compiler.exec(ast);
+        const auto positiveFractionValueExp = parse("880055.53535e10");
         assert(positiveFractionValueExp.isNumber());
         assert(positiveFractionValueExp.asNumber() == 880055.53535e10);
     }
     {
-        const auto ast = b.parse("-880055.53535e10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeFractionValueExp = compiler.exec(ast);
+        const auto negativeFractionValueExp = parse("-880055.53535e10");
         assert(negativeFractionValueExp.isNumber());
         assert(negativeFractionValueExp.asNumber() == -880055.53535e10);
     }
     {
-        const auto ast = b.parse("88005553535e+10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveIntValuePositiveExp = compiler.exec(ast);
+        const auto positiveIntValuePositiveExp = parse("88005553535e+10");
         assert(positiveIntValuePositiveExp.isNumber());
         assert(positiveIntValuePositiveExp.asNumber() == 88005553535e+10);
     }
     {
-        const auto ast = b.parse("-88005553535e+10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeIntPositiveExp = compiler.exec(ast);
+        const auto negativeIntPositiveExp = parse("-88005553535e+10");
         assert(negativeIntPositiveExp.isNumber());
         assert(negativeIntPositiveExp.asNumber() == -88005553535e+10);
     }
     {
-        const auto ast = b.parse("880055.53535e+10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveFractionValuePositiveExp = compiler.exec(ast);
+        const auto positiveFractionValuePositiveExp = parse("880055.53535e+10");
         assert(positiveFractionValuePositiveExp.isNumber());
         assert(positiveFractionValuePositiveExp.asNumber() == 880055.53535e+10);
     }
     {
-        const auto ast = b.parse("-880055.53535e+10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeFractionValuePositiveExp = compiler.exec(ast);
+        const auto negativeFractionValuePositiveExp = parse("-880055.53535e+10");
         assert(negativeFractionValuePositiveExp.isNumber());
         assert(negativeFractionValuePositiveExp.asNumber() == -880055.53535e+10);
     }
     {
-        const auto ast = b.parse("88005553535e-10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveIntValueNegativeExp = compiler.exec(ast);
+        const auto positiveIntValueNegativeExp = parse("88005553535e-10");
         assert(positiveIntValueNegativeExp.isNumber());
         assert(positiveIntValueNegativeExp.asNumber() == 88005553535e-10);
     }
     {
-        const auto ast = b.parse("-88005553535e-10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeIntNegativeExp = compiler.exec(ast);
+        const auto negativeIntNegativeExp = parse("-88005553535e-10");
         assert(negativeIntNegativeExp.isNumber());
         assert(negativeIntNegativeExp.asNumber() == -88005553535e-10);
     }
     {
-        const auto ast = b.parse("880055.53535e-10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto positiveFractionValueNegativeExp = compiler.exec(ast);
+        const auto positiveFractionValueNegativeExp = parse("880055.53535e-10");
         assert(positiveFractionValueNegativeExp.isNumber());
         assert(positiveFractionValueNegativeExp.asNumber() == 880055.53535e-10);
     }
     {
-        const auto ast = b.parse("-880055.53535e-10");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto negativeFractionValueNegativeExp = compiler.exec(ast);
+        const auto negativeFractionValueNegativeExp = parse("-880055.53535e-10");
         assert(negativeFractionValueNegativeExp.isNumber());
         assert(negativeFractionValueNegativeExp.asNumber() == -880055.53535e-10);
     }
     {
         const std::string s = "";
-        const auto ast = b.parse('\"' + s + '\"');
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto emptyStringValue = compiler.exec(ast);
+        const auto emptyStringValue = parse('\"' + s + '\"');
         assert(emptyStringValue.isString());
         assert(emptyStringValue.asString() == s);
     }
     {
         const std::string s = "Vladimir Putin congratulated Russia’s women on "
                               "International Women’s Day.";
-        const auto ast = b.parse('\"' + s + '\"');
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto stringValue = compiler.exec(ast);
+        const auto stringValue = parse('\"' + s + '\"');
         assert(stringValue.isString());
         assert(stringValue.asString() == s);
     }
@@ -168,23 +121,17 @@ int main()
         const std::string unescaped =
             "\" \\ / \b \f \n \r \t "
             "\x48\x45\x4C\x4C\x4F\x20\x55\x4E\x49\x43\x4F\x44\x45\x0A\xD1\x8b";
-        const auto ast = b.parse('\"' + escaped + '\"');
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const auto stringValue = compiler.exec(ast);
+        const auto stringValue = parse('\"' + escaped + '\"');
         assert(stringValue.isString());
         assert(stringValue.asString() == unescaped);
     }
     {
-        const auto ast = b.parse("[]");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const Value emptyArrayValue = compiler.exec(ast);
+        const auto emptyArrayValue = parse("[]");
         assert(emptyArrayValue.isArray());
         assert(emptyArrayValue.asArray().empty());
     }
     {
-        const auto ast = b.parse("[42, 10, 1, 74]");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const Value arrayValue = compiler.exec(ast);
+        const auto arrayValue = parse("[42, 10, 1, 74]");
         assert(arrayValue.isArray());
         assert(arrayValue.asArray().size() == 4);
         assert(arrayValue[0].isNumber() && arrayValue[0].asNumber() == 42);
@@ -193,9 +140,8 @@ int main()
         assert(arrayValue[3].isNumber() && arrayValue[3].asNumber() == 74);
     }
     {
-        const auto ast = b.parse(R"([23.59, "sss", ["nested", "array"]])");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const Value nestedArrayValue = compiler.exec(ast);
+        const auto nestedArrayValue =
+            parse(R"([23.59, "sss", ["nested", "array"]])");
         assert(nestedArrayValue.isArray());
         assert(nestedArrayValue.asArray().size() == 3);
         assert(
@@ -204,7 +150,7 @@ int main()
         assert(
             nestedArrayValue[1].isString()
             && nestedArrayValue[1].asString() == "sss");
-        const Value& nested = nestedArrayValue[2];
+        const auto& nested = nestedArrayValue[2];
         assert(
             nested.isArray() && nested[0].isString()
             && nested[0].asString() == "nested");
@@ -213,21 +159,17 @@ int main()
             && nested[1].asString() == "array");
     }
     {
-        const auto ast = b.parse(R"({})");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const Value objectValue = compiler.exec(ast);
+        const auto objectValue = parse(R"({})");
         assert(objectValue.isObject());
     }
     {
-        const auto ast = b.parse(R"({"key": 42})");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const Value objectValue = compiler.exec(ast);
+        const auto objectValue = parse(R"({"key": 42})");
         assert(objectValue.isObject());
-        const Value& v = objectValue["key"];
+        const auto& v = objectValue["key"];
         assert(v.isNumber() && v.asNumber() == 42);
     }
     {
-        const auto ast = b.parse(R"(
+        const auto objectValue = parse(R"(
 {
 	"key array": [10, -30, 50.4, -73.145, -96.12e-1, 45.91e+1],
 	"key bools": [true, false, true, true],
@@ -238,8 +180,6 @@ int main()
 	"string key": "hello",
 	"number key": 42
 })");
-        std::cout << peg::ast_to_s(ast) << std::endl;
-        const Value objectValue = compiler.exec(ast);
         assert(objectValue.isObject());
         assert(objectValue["key array"][0].asNumber() == 10);
         assert(objectValue["key array"][1].asNumber() == -30);

@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <map>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -191,4 +192,7 @@ public:
 private:
     std::variant<Null, Bool, Number, String, Array, Object> m_variant;
 };
+
+Value parse(const std::string_view s);
+
 } // namespace vehlwn::json
